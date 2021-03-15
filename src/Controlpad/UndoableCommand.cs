@@ -17,17 +17,17 @@
         void IUndoableCommand.Invoke()
         {
             _prev = _current.Cache;
-            _current.SetMemento(_next);
+            _current.Update(_next);
         }
 
         void IUndoableCommand.Undo()
         {
-            _current.SetMemento(_prev);
+            _current.Update(_prev);
         }
 
         void IUndoableCommand.Redo()
         {
-            _current.SetMemento(_next);
+            _current.Update(_next);
         }
     }
 }
