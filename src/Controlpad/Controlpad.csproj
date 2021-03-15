@@ -1,7 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>net35;netcoreapp3.1;</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>controlpad.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/tatsuya-midorikawa/Controlpad</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/tatsuya-midorikawa/Controlpad</RepositoryUrl>
+    <PackageTags>memento,command</PackageTags>
+    <Version>0.0.1</Version>
+    <Company>tech leaves</Company>
+    <Authors>midoliy</Authors>
+    <Description>Libraries that provide Undo and Redo functionality</Description>
+    <Copyright>© 2021 Tatsuya Midorikawa. All rights rserved</Copyright>
+    <NeutralLanguage>ja-JP</NeutralLanguage>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\assets\controlpad.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
