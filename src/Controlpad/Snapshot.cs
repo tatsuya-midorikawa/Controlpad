@@ -2,10 +2,10 @@
 
 namespace Controlpad
 {
-    public sealed class Snapshot<T, U>
+    internal sealed class Snapshot<T, U>
             where T : class
     {
-        internal Snapshot(T state, U cache, Action<T, U> updater)
+        public Snapshot(T state, U cache, Action<T, U> updater)
         {
             State = state;
             Cache = cache;
