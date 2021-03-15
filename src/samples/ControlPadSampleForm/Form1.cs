@@ -40,8 +40,7 @@ namespace ControlPadSampleForm
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            if (!runbook.Invoke(ContentArea, ContentArea.Text))
-                MessageBox.Show("The command storage limit has been exceeded.");
+            runbook.Invoke(ContentArea, ContentArea.Text);
         }
 
         private void ClearButton_Click(object sender, EventArgs e)

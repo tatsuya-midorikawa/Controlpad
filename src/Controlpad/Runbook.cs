@@ -5,44 +5,62 @@ using Controlpad.Internals;
 
 namespace Controlpad
 {
+    internal static class LinkedListExtensions
+    {
+        public static T Pop<T>(this LinkedList<T> list)
+        {
+            var cache = list.Last.Value;
+            list.RemoveLast();
+            return cache;
+        }
+
+        public static void Push<T>(this LinkedList<T> list, T value)
+        {
+            list.AddLast(value);
+        }
+    }
+
     public sealed class Runbook
     {
         private readonly int capacity;
-        private readonly Stack<IUndoableCommand> undoCommands;
-        private readonly Stack<IUndoableCommand> redoCommands;
+        private readonly LinkedList<IUndoableCommand> undoCommands;
+        private readonly LinkedList<IUndoableCommand> redoCommands;
 
-        public Runbook() : this(capacity: 30) { }
+        public Runbook() : this(int.MaxValue) { }
         public Runbook(int capacity)
         {
             this.capacity = capacity;
-            undoCommands = new Stack<IUndoableCommand>(capacity);
-            redoCommands = new Stack<IUndoableCommand>(capacity);
+            undoCommands = new LinkedList<IUndoableCommand>();
+            redoCommands = new LinkedList<IUndoableCommand>();
         }
 
         public bool CanUndo => undoCommands.Any();
         public bool CanRedo => redoCommands.Any();
 
-        public bool Invoke<T, U>(T state, U newValue)
+        public void Invoke<T, U>(T state, U newValue)
             where T : class
         {
             if (capacity <= undoCommands.Count)
-                return false;
+            {
+                // capacityを超えている場合, 最初に登録した値を削除して容量を空ける
+                undoCommands.RemoveFirst();
+            }
 
             if (!SnapshotStorage<T, Snapshot<T, U>>.TryGetValue(state, out Snapshot<T, U> snapshot))
-                return false;
+                throw new InvalidOperationException("対応するSnapshotが登録されていません。");
 
             var command = snapshot.ToCommand(newValue);
 
             command.Invoke();
             redoCommands.Clear();
             undoCommands.Push(command);
-            return true;
         }
 
         public void Undo()
         {
             if (!CanUndo)
                 return;
+
             var command = undoCommands.Pop();
             command.Undo();
             redoCommands.Push(command);
@@ -52,6 +70,7 @@ namespace Controlpad
         {
             if (!CanRedo)
                 return;
+
             var command = redoCommands.Pop();
             command.Redo();
             undoCommands.Push(command);
