@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Controlpad.Internals;
 
 namespace Controlpad
 {
@@ -20,10 +22,17 @@ namespace Controlpad
         public bool CanUndo => undoCommands.Any();
         public bool CanRedo => redoCommands.Any();
 
-        public bool Invoke(IUndoableCommand command)
+        public bool Invoke<T, U>(T state, U newValue)
+            where T : class
         {
             if (capacity <= undoCommands.Count)
                 return false;
+
+            if (!SnapshotStorage<T, Snapshot<T, U>>.TryGetValue(state, out Snapshot<T, U> snapshot))
+                return false;
+
+            var command = snapshot.ToCommand(newValue);
+
             command.Invoke();
             redoCommands.Clear();
             undoCommands.Push(command);
@@ -52,6 +61,13 @@ namespace Controlpad
         {
             undoCommands.Clear();
             redoCommands.Clear();
+        }
+
+        public bool TryAdd<T, U>(T state, U value, Action<T, U> updater)
+            where T : class
+        {
+            var snapshot = new Snapshot<T, U>(state, value, updater);
+            return SnapshotStorage<T, Snapshot<T, U>>.TryAdd(state, snapshot);
         }
     }
 }

@@ -13,19 +13,17 @@ namespace ControlPadSampleForm
 {
     public partial class Form1 : Form
     {
-        private readonly Snapshot<TextBox, string> snapshot;
         private readonly Runbook runbook;
 
         public Form1()
         {
             InitializeComponent();
 
-            snapshot = new Snapshot<TextBox, string>(ContentArea, ContentArea.Text, (contentArea, newText) =>
+            runbook = new Runbook(capacity: 10);
+            runbook.TryAdd(ContentArea, ContentArea.Text, (contentArea, newText) =>
             {
                 contentArea.Text = newText;
             });
-
-            runbook = new Runbook(capacity: 10);
         }
 
         private void UndoButton_Click(object sender, EventArgs e)
@@ -42,8 +40,7 @@ namespace ControlPadSampleForm
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            var command = snapshot.ToCommand(ContentArea.Text);
-            if (!runbook.Invoke(command))
+            if (!runbook.Invoke(ContentArea, ContentArea.Text))
                 MessageBox.Show("The command storage limit has been exceeded.");
         }
 
