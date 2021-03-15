@@ -7,7 +7,7 @@ using System.Text;
 namespace Controlpad.Internals
 {
     internal class SnapshotStorage<T, U>
-            where T : class
+        where T : class
     {
         private static ConcurrentDictionary<T, U> _cache = new ConcurrentDictionary<T, U>();
 

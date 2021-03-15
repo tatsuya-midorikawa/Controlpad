@@ -3,7 +3,7 @@
 namespace Controlpad
 {
     internal sealed class Snapshot<T, U>
-            where T : class
+        where T : class
     {
         public Snapshot(T state, U cache, Action<T, U> updater)
         {

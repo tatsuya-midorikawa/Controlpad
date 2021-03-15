@@ -9,7 +9,7 @@
     <PackageProjectUrl>https://github.com/tatsuya-midorikawa/Controlpad</PackageProjectUrl>
     <RepositoryUrl>https://github.com/tatsuya-midorikawa/Controlpad</RepositoryUrl>
     <PackageTags>memento,command</PackageTags>
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Company>tech leaves</Company>
     <Authors>midoliy</Authors>
     <Description>Libraries that provide Undo and Redo functionality</Description>
