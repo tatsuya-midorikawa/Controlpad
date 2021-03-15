@@ -14,12 +14,9 @@ namespace Controlpad
 
         public T State { get; }
         public U Cache { get; private set; }
-        private readonly Action<T, U> updater;
+        internal readonly Action<T, U> updater;
 
-        public UndoableCommand<T, U> CreateCommand(U updateValue)
-            => new UndoableCommand<T, U>(this, new Snapshot<T, U>(State, updateValue, updater));
-
-        public void SetMemento(U current)
+        public void Update(U current)
         {
             updater(State, current);
             Cache = current;
