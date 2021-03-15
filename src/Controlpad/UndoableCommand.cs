@@ -1,6 +1,6 @@
 ﻿namespace Controlpad
 {
-    public sealed class UndoableCommand<T, U> : IUndoableCommand
+    internal sealed class UndoableCommand<T, U> : IUndoableCommand
          where T : class
     {
         private readonly Snapshot<T, U> _current;
